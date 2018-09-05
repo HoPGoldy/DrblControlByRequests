@@ -24,3 +24,43 @@ Brand.py - 封装了chinasspp爬虫，为项目提供需要的方法
 run.py - 上传流程的启动脚本
 
 setting.py - 一些参数，包括登陆用的用户名和密码
+
+# DrblControl
+该类定义与Drbl.py文件夹中，以下为提供的方法功能
+
+1. **login(userName, password)** 
+
+    登陆Drbl，使用该类的其他所有方法之前均需进行登陆
+
+    参数： 
+
+        userName(字符串类型) 登陆用户名
+
+        password(字符串类型) 登陆密码
+
+    返回值：
+
+        True - 登陆成功
+
+        False - 登陆失败
+
+
+2. **addItem(itemData)**
+
+    接受一个标准的数据结构， 并将其上传到Drbl的新有好货
+    
+    参数：
+    
+        itemData(字典) - 需要上传的数据
+    
+    返回值：
+        
+        True - 上传成功
+
+        False - 上传失败
+
+3. **importWord(wordPath, importType)**
+
+4. **importImg(imgPath)**
+
+5. **getItemInfo(itemUrl)**
