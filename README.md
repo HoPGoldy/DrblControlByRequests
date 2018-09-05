@@ -61,6 +61,49 @@ setting.py - 一些参数，包括登陆用的用户名和密码
 
 3. **importWord(wordPath, importType)**
 
+    接受一个Drbl支持的word模板，并将其上传到指定的类型领域中
+    
+    参数：
+    
+        wordPath(字符串) - 需要上传的word文档路径
+        
+        importType(整形) - 导入到哪个类型，如101为新有好货（默认）
+    
+
 4. **importImg(imgPath)**
 
+    将提供的文件上传至Drbl，若上传成功则返回其url
+    
+    参数：
+        
+        imgPath(字符串) - 需要上传的图片路径
+    
+    返回值：
+    
+        - 上传成功返回其url
+        
+        - 上传失败返回None
+
 5. **getItemInfo(itemUrl)**
+
+    获取提供的商品的主要信息
+    
+    参数：
+    
+        itemUrl - 想要查询的商品url
+    
+    返回值：
+    
+        - 查询成功返回一个包含信息的字典，结构如下
+            {
+            'title': 商品标题
+            'isAdded': 该商品是否被添加，是则为True
+            'industry': 商品类别
+            'url': 商品的短链接
+            'id': 商品id
+            'img': 商品封面图url
+            'shopTitle': 店铺名
+            'shopUrl': 店铺url
+            }
+            
+        - 查询失败则返回None
