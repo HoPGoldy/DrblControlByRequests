@@ -14,8 +14,8 @@ IS_GET_BRAND_INTRODUCE = True
 IS_GET_BRAND_LOGO = True
 
 # 登陆drbl的用户名以及密码
-USER_NAME = 'hophophop'
-PASSWORD = '123456'
+USER_NAME = 'your username'
+PASSWORD = 'your password'
 
 
 
