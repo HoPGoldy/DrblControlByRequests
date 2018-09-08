@@ -4,6 +4,7 @@
 
 import win32clipboard as w
 import win32con
+from setting import CATEGORY
 import re
 import random
 
@@ -34,9 +35,9 @@ def formatDataByReg(text):
         brand = getBrand(dataTemp)
 
         data = {
-            'category': 9,
+            'category': CATEGORY,
             'brand': brand,
-            'targetPeople': (10, random.randint(1, 5)),
+            'targetPeople': (9, random.randint(47, 51)),
             'url': getUrl(dataTemp),
             'title': f'{brand} {getTitle(dataTemp)}',
             'longHighLight': getLongHighLights(dataTemp),

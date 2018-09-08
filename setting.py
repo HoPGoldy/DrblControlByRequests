@@ -14,10 +14,15 @@ IS_GET_BRAND_INTRODUCE = True
 IS_GET_BRAND_LOGO = True
 
 # 登陆drbl的用户名以及密码
-USER_NAME = 'hophophop'
-PASSWORD = '123456'
+USER_NAME = 'your username'
+PASSWORD = 'your password'
 
-
+# 上传条目的自定义分类索引
+# 4 母婴
+# 6 美妆
+# 9 潮男
+# 10 潮女
+CATEGORY = 10
 
 
 

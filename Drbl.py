@@ -119,16 +119,16 @@ class DrblControl():
             'BADGE': 0,
             'RWID': None,
             'ITEMID': itemInfo['id'],
-            'CLASSIFYID': 1,
+            'CLASSIFYID': itemData['category'],
             'temp_f_RWID': None,
             'COMMODITYLIBRARYID': detailData,
             'TITLE': itemData['title'],
             'FORTUNATELY': longHighLight,
             'FORTUNATELY_SHORT': shortHighLight,
             'COVERIMG':  additionData,
-            'gradeone': 9,
-            'gradetwo': 49,
-            'MAINPEOPLE': 49,
+            'gradeone': itemData['targetPeople'][0],
+            'gradetwo': itemData['targetPeople'][1],
+            'MAINPEOPLE': itemData['targetPeople'][1],
             'TEMP_F_DRAFTS': 1}
 
         response = self._session.post(self.addItemUrl, data=fromData, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36'})

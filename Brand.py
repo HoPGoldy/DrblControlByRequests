@@ -33,7 +33,7 @@ def cutBrandIntroduce(str, min, max):
     for seg in segs:
         goodIntrodue += seg
         if min < len(goodIntrodue) < max:
-            return goodIntrodue
+            return goodIntrodue + '。'
 
     return ' ' * MIN_ADDITION_NUM
 
