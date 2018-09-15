@@ -6,17 +6,22 @@ import requests
 from lxml import etree
 import json
 import re
-from setting import PIC_FOLDER_PATH
+import time
 
 
 class DrblControl():
     baseUrl = 'https://drbl.daorc.com/'
     loginUrl = 'https://drbl.daorc.com/user_jsonLogin.action'
     addItemUrl = 'https://drbl.daorc.com/data_saveData.action'#http://httpbin.org/post'
+    getRecommendUrl = 'https://drbl.daorc.com/main_welcome2.action?set=11'
     seachItemUrl = 'https://drbl.daorc.com/commoditylibrary_itemcCheck.action'
     checkItemUrl = 'https://drbl.daorc.com/commoditylibrary_getCommodityDetailByUrl.action'
     importWordUrl = 'https://drbl.daorc.com/$%7BcontextPath%7D/wordimport_importWord.action'
     importImgUrl = 'https://drbl.daorc.com/picturelibrary_uploadBatch.action?itemId='
+    getBrandListUrl = 'https://drbl.daorc.com/data_queryDataListToJSON.action'
+    getBrandUrl = 'https://drbl.daorc.com/brands_getBrands.action'
+
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36'}
     checkItemFiledicid = '1504322571727'
     _session = None
     _loginToken = None
@@ -131,9 +136,77 @@ class DrblControl():
             'MAINPEOPLE': itemData['targetPeople'][1],
             'TEMP_F_DRAFTS': 1}
 
-        response = self._session.post(self.addItemUrl, data=fromData, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36'})
+        response = self._session.post(self.addItemUrl, data=fromData, headers=self.headers)
         # print(response.text)
         return True
+
+    def getBrand(self, startPage=1, endPage=2, fileTypeId=123):
+        payload = {
+            'fileTypeId': fileTypeId,
+            'tableFlag': 'WJ',
+            'pageInfo': 'STATUS@@1@@2@_@',
+            'isSeacher': 1,
+            'offset': 32,
+            'limit': 8,
+            'order': 'asc',
+            'page': 5,
+            'rows': 8,
+        }
+        brandIDs = []
+        for i in range(startPage, endPage+1):
+            # print(f'正在获取第{i}页的品牌')
+            payload['page'] = i
+            payload['offset'] = 8 * (i - 1)
+            response = self._session.get(self.getBrandListUrl, params=payload)
+            returnJson = json.loads(response.text)
+            for row in returnJson['rows']:
+                brandIDs.append(row['ID'])
+            time.sleep(1)
+
+        fromData = {
+            'id': None,
+            'fileTypeId': 123
+        }
+        brandData = []
+        for index, brandID in enumerate(brandIDs):
+            fromData['id'] = brandID
+            response = self._session.post(self.getBrandUrl, fromData)
+            returnJson = json.loads(response.text)
+
+            print(f'[{index + 1}] {returnJson["data"]["brandsVoList"]}')
+            brandData.append(returnJson['data']['brandsVoList'])
+            time.sleep(1)
+
+        brands = []
+        for data in brandData:
+            dataTemp = []
+            for brand in data:
+                logoData = json.loads(brand['brandsLogo'])
+                temp = {
+                    'brand': brand['brandsName'],
+                    'describe': brand['brandsDescribe'],
+                    'logo': logoData[0]['url']
+                }
+                dataTemp.append(temp)
+            brands.append(dataTemp)
+
+        return brands
+
+
+    # 获取推荐
+    def getRecommend(self, itemUrl):
+        fromData = {
+            'url': itemUrl,
+            'title': None
+        }
+        response = self._session.post(self.getRecommendUrl, data=fromData)
+        returnJson = json.loads(response.text)
+
+        recommends = []
+        for item in returnJson['data']:
+            if len(item['summary']) >= 60:
+                recommends.append((item["title"], item['summary']))
+        return recommends
 
     # 从word导入条目
     def importWord(self, wordPath, importType='101'):
@@ -181,14 +254,14 @@ class DrblControl():
 
         mainInfo = returnJson['data'][0]
         return {
-            'title': mainInfo['title'],
+            'title': mainInfo.get('title'),
             'isAdded': 'alertmsg' in returnJson,
-            'industry': mainInfo['industry'],
-            'url': mainInfo['item_url'],
-            'id': mainInfo['num_iid'],
-            'img': mainInfo['pict_url'],
-            'shopTitle': mainInfo['shopTitle'],
-            'shopUrl': mainInfo['shopUrl']
+            'industry': mainInfo.get('industry'),
+            'url': mainInfo.get('item_url'),
+            'id': mainInfo.get('num_iid'),
+            'img': mainInfo.get('pict_url'),
+            'shopTitle': mainInfo.get('shopTitle'),
+            'shopUrl': mainInfo.get('shopUrl')
         }
 
     def _getDataByXpath(self, pageSource, xpath):
