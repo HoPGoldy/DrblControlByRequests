@@ -15,8 +15,8 @@ titleReg = r'(?<=[\s])[\S]+(?=\r\n长亮点)'
 longHighLightsReg = r'(?<=长亮点：\r\n)[\S]+\r\n[\S]+\r\n[\S]+'
 shortHighLightReg = r'(?<=短亮点：\r\n)[\S]+\r\n[\S]+\r\n[\S]+'
 designHighlightReg = r'(?<=设计亮点\r\n)[\S]+(?=\r\n)'
-otherAdditionTitleReg = r'(搭配指南|材质解析)'
-otherAdditionContentReg = r'(?<=(搭配指南|材质解析)\r\n)[\S]+'
+otherAdditionTitleReg = r'(设计亮点|搭配指南|材质解析)'
+otherAdditionContentReg = r'(?<=(设计亮点|搭配指南|材质解析)\r\n)[\S]+'
 
 
 def getClipBoardData():
