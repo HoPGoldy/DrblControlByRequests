@@ -43,9 +43,6 @@ def formatDataByReg(text):
             'longHighLight': getLongHighLights(dataTemp),
             'shortHighLight': getShortHighLights(dataTemp),
             'addition': [{
-                    'title': '设计亮点',
-                    'content': getDesignHighlight(dataTemp)},
-                         {
                     'title': getOtherAdditionTitle(dataTemp),
                     'content': getOtherAdditionContent(dataTemp)}
                 ]
