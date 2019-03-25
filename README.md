@@ -1,5 +1,5 @@
 # DrblControlByRequests
-基于requests库封装的网站https://drbl.daorc.com的主要操作
+基于requests库封装的网站 https://drbl.daorc.com 的主要操作
 
 # 安装
 1. 运行环境
